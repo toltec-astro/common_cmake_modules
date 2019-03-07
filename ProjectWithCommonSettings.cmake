@@ -1,5 +1,8 @@
 macro(project_with_common_settings)
-    cmake_minimum_required(VERSION 3.12)
+    set(COMMON_SETTINGS_MINIMUM_VERSION "3.12")
+    if(${CMAKE_VERSION} VERSION_LESS ${COMMON_SETTINGS_MINIMUM_VERSION})
+        message(FATAL_ERROR "The common settings require minimum cmake version ${COMMON_SETTINGS_MINIMUM_VERSION}")
+    endif()
     project(${ARGV})
     ## No build-in-src guard
     file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
@@ -8,8 +11,8 @@ macro(project_with_common_settings)
     endif()
     ## CMake settings
     if (NOT CMAKE_BUILD_TYPE)
-      message(STATUS "No build type selected, default to RelWithDebInfo")
-      set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
+        message(STATUS "No build type selected, default to RelWithDebInfo")
+        set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
     endif()
     # Platform specifics
     if (APPLE)
