@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 include(FetchContent)
 # let find_package pick up our subproject
 # see https://gitlab.kitware.com/cmake/cmake/issues/17735

@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 include(CheckSymbolExists)
 check_symbol_exists("shm_open" "sys/mman.h" HAS_SHM)
 if (NOT HAS_SHM)

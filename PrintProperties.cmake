@@ -1,5 +1,6 @@
+include_guard(GLOBAL)
 # Get all propreties that cmake supports
-find_program (cmake_exec "cmake")
+set(cmake_exec "${CMAKE_COMMAND}")
 execute_process(COMMAND ${cmake_exec} --help-property-list OUTPUT_VARIABLE CMAKE_PROPERTY_LIST)
 # Convert command output into a CMake list
 STRING(REGEX REPLACE ";" "\\\\;" CMAKE_PROPERTY_LIST "${CMAKE_PROPERTY_LIST}")
