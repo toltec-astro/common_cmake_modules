@@ -1,4 +1,6 @@
 include_guard(GLOBAL)
+set(FCH_PATCH_DIR ${CMAKE_CURRENT_LIST_DIR}/patches CACHE INTERNAL "")
+
 include(FetchContent)
 # let find_package pick up our subproject
 # see https://gitlab.kitware.com/cmake/cmake/issues/17735

@@ -3,9 +3,11 @@ macro(BuildEigen3AndCeres)
     set(svargs EIGEN3 CERES)
     cmake_parse_arguments(BEC "" "${svargs}" "")
     if (NOT BEC_EIGEN3)
+        message("Use Eigen3 from branch default")
         set(BEC_EIGEN3 "default")
     endif()
     if (NOT BEC_CERES)
+        message("Use Ceres-solver from branch master")
         set(BEC_CERES "master")
     endif()
     include(FetchContentHelper)
@@ -34,6 +36,15 @@ macro(BuildEigen3AndCeres)
             BUILD_EXAMPLES=OFF
             BUILD_BENCHMARKS=OFF
         PATCH_SUBDIR
-            ${CMAKE_CURRENT_SOURCE_DIR}/patches/patch.sh "ceres*.patch"
+            ${PATCH_DIR}/patches/patch.sh "ceres*.patch"
         )
+endmacro()
+macro(UseEigen3AndCeres prefix)
+    if (prefix)
+        set(Eigen3_DIR ${prefix})
+        set(Ceres_DIR ${prefix})
+    endif()
+    find_package(Eigen3 REQUIRED CONFIG)
+    set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
+    find_package(Ceres REQUIRED COMPONENTS C++11)
 endmacro()
