@@ -26,6 +26,8 @@ else()
     FetchContentHelper(eigen HG "https://bitbucket.org/eigen/eigen" ${FCH_EIGEN3_TAG}
         ADD_SUBDIR CONFIG_SUBDIR
             BUILD_TESTING=OFF
+        PATCH_SUBDIR
+            ${FCH_PATCH_DIR}/patch.sh "eigen3*.patch"
         REGISTER_PACKAGE
             Eigen3 INCLUDE_CONTENT
                 "set(EIGEN3_FOUND TRUE)\nset(EIGEN3_INCLUDE_DIR \${eigen_SOURCE_DIR})"
