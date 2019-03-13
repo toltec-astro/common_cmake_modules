@@ -38,3 +38,6 @@ else()
             ${FCH_PATCH_DIR}/patch.sh "ceres*.patch"
         )
 endif()
+add_library(ceres_alias INTERFACE)
+target_link_libraries(ceres_alias INTERFACE ceres)
+add_library(ceres::ceres ALIAS ceres_alias)
