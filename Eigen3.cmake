@@ -9,7 +9,10 @@ if (USE_INSTALLED_EIGEN3)
         message("Use Eigen3 from default location")
         unset(Eigen3_DIR)
     endif()
-    find_package(Eigen3 3.3 REQUIRED CONFIG)
+    find_package(Eigen3 REQUIRED
+        NO_MODULE
+        NO_CMAKE_PACKAGE_REGISTRY
+        NO_CMAKE_BUILDS_PATH)
     include(PrintProperties)
     print_target_properties(Eigen3::Eigen)
     set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
