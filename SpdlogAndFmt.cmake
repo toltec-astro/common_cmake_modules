@@ -1,6 +1,6 @@
 include_guard(GLOBAL)
 include(FetchContentHelper)
-FetchContentHelper(fmt GIT "https://github.com/fmtlib/fmt.git" 5.2.1
+FetchContentHelper(fmt GIT "https://github.com/fmtlib/fmt.git" "master"
     ADD_SUBDIR
     )
 FetchContentHelper(spdlog GIT "https://github.com/gabime/spdlog.git" v1.x

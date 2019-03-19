@@ -1,6 +1,5 @@
 include_guard(GLOBAL)
 option(USE_INSTALLED_CERES "Use installed Ceres-solver" OFF)
-option(FCH_CERES_TAG "Branch/tag used to fetch Ceres-solver source code" OFF)
 if (USE_INSTALLED_CERES)
     set(Ceres_DIR ${USE_INSTALLED_CERES}/lib/cmake/Ceres)
     if (EXISTS ${Ceres_DIR})
@@ -11,12 +10,8 @@ if (USE_INSTALLED_CERES)
     endif()
     find_package(Ceres REQUIRED CONFIG)
 else()
-    if (NOT FCH_CERES_TAG)
-        message("Use Ceres-solver from repo branch \"master\"")
-        set(FCH_CERES_TAG "master")
-    endif()
     include(FetchContentHelper)
-    FetchContentHelper(ceres GIT "https://github.com/ceres-solver/ceres-solver.git" ${FCH_CERES_TAG}
+    FetchContentHelper(ceres GIT "https://github.com/ceres-solver/ceres-solver.git" "master"
         ADD_SUBDIR CONFIG_SUBDIR
             EIGEN_PREFER_EXPORTED_EIGEN_CMAKE_CONFIGURATION=ON
             EIGENSPARSE=ON

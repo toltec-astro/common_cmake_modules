@@ -27,6 +27,12 @@ function(FetchContentHelper name vc url tag)
     set(mvargs CONFIG_SUBDIR PATCH_SUBDIR REGISTER_PACKAGE)
     cmake_parse_arguments(PARSE_ARGV 4 FCH "${options}" "" "${mvargs}")
 
+    string(TOUPPER ${name} name_ac)
+    option(FCH_${name_ac}_TAG "Branch/tag used to fetch ${name} source code" OFF)
+    if (FCH_${name_ac}_TAG)
+        set(tag ${FCH_${name_ac}_TAG})
+    endif()
+    message(STATUS "Use ${name} from repo branch/tag ${tag}")
     set(declare_args
         ${name}
         ${vc}_REPOSITORY ${url}
