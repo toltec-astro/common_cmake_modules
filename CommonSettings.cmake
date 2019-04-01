@@ -53,10 +53,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 option(VERBOSE "Print addtional messages from CMake" ON)
 include(PrintProperties)
-# generate a dummy clang-tidy file to suppress warning from deps
-file(WRITE "${CMAKE_BINARY_DIR}/.clang-tidy" "
----
-Checks: '-*,llvm-twine-local'
-...
-")
+# copy a dummy clang-tidy file to suppress warning from deps
+configure_file("${CMAKE_CURRENT_LIST_DIR}/clang-tidy/disable.ctd" "${CMAKE_BINARY_DIR}/.clang-tidy" COPYONLY)
 
