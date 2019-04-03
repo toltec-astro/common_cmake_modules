@@ -40,9 +40,9 @@
 
 # Finding NumPy involves calling the Python interpreter
 if(NumPy_FIND_REQUIRED)
-    find_package(Python REQUIRED COMPONENTS Interpreter)
+    find_package(Python REQUIRED COMPONENTS Development Interpreter)
 else()
-    find_package(Python COMPONENTS Interpreter)
+    find_package(Python COMPONENTS Development Interpreter)
 endif()
 
 if(NOT Python_Interpreter_FOUND)
