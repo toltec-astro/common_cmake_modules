@@ -1,4 +1,6 @@
-function(GenVersionHeader local_dir output_dir)
+set(gitversion_dir ${CMAKE_CURRENT_LIST_DIR})
+
+function(GenVersionHeader output_dir)
     message(STATUS "Resolving GIT Version")
     set(_build_version "unknown")
     find_package(Git)
@@ -17,5 +19,5 @@ function(GenVersionHeader local_dir output_dir)
 
     string(TIMESTAMP _time_stamp)
 
-    configure_file(${local_dir}/cmake/gitversion.h.in ${output_dir}/gitversion.h @ONLY)
+    configure_file(${gitversion_dir}/gitversion.h.in ${output_dir}/gitversion.h @ONLY)
 endfunction()
