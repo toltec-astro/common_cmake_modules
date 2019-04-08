@@ -1,0 +1,57 @@
+diff --git a/include/native/parallel_execution_native.h b/include/native/parallel_execution_native.h
+index 8a0013a..cd76c58 100644
+--- a/include/native/parallel_execution_native.h
++++ b/include/native/parallel_execution_native.h
+@@ -99,8 +99,8 @@ inline int thread_registry::current_index() const noexcept
+   using namespace std;
+   while (lock_.test_and_set(memory_order_acquire)) {}
+   auto this_id = this_thread::get_id();
+-  auto current = find(begin(ids_), end(ids_), this_id);
+-  auto index = distance(begin(ids_), current);
++  auto current = find(std::begin(ids_), std::end(ids_), this_id);
++  auto index = distance(std::begin(ids_), current);
+   lock_.clear(memory_order_release);
+   return index;
+ }
+@@ -868,7 +868,7 @@ void parallel_execution_native::pipeline(
+     Transformers && ... transform_ops) const
+ {
+   using namespace std;
+-  using result_type = decay_t<typename result_of<Generator()>::type>;
++  using result_type = decay_t<typename std::result_of<Generator()>::type>;
+   using output_type = pair<result_type,long>;
+   auto output_queue = make_queue<output_type>();
+ 
+@@ -1079,8 +1079,8 @@ void parallel_execution_native::do_pipeline(
+ 
+   using input_item_type = typename Queue::value_type;
+   using input_item_value_type = typename input_item_type::first_type::value_type;
+-  using transform_result_type = 
+-      decay_t<typename result_of<Transformer(input_item_value_type)>::type>;
++  using transform_result_type =
++      decay_t<typename std::result_of<Transformer(input_item_value_type)>::type>;
+   using output_item_value_type = std::optional<transform_result_type>;
+   using output_item_type = pair<output_item_value_type,long>;
+ 
+diff --git a/include/omp/parallel_execution_omp.h b/include/omp/parallel_execution_omp.h
+index e5440bf..acb80eb 100644
+--- a/include/omp/parallel_execution_omp.h
++++ b/include/omp/parallel_execution_omp.h
+@@ -791,7 +791,7 @@ void parallel_execution_omp::pipeline(
+ {
+   using namespace std;
+ 
+-  using result_type = decay_t<typename result_of<Generator()>::type>;
++  using result_type = decay_t<typename std::result_of<Generator()>::type>;
+   auto output_queue = make_queue<pair<result_type,long>>(); 
+ 
+   #pragma omp parallel
+@@ -1071,7 +1071,7 @@ void parallel_execution_omp::do_pipeline(
+   using namespace std;
+   using input_type = typename Queue::value_type;
+   using input_value_type = typename input_type::first_type::value_type;
+-  using result_type = typename result_of<Transformer(input_value_type)>::type;
++  using result_type = typename std::result_of<Transformer(input_value_type)>::type;
+   using output_value_type = std::optional<result_type>;
+   using output_type = pair<output_value_type,long>;
+ 
