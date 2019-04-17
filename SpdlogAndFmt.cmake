@@ -2,8 +2,6 @@ include_guard(GLOBAL)
 include(FetchContentHelper)
 FetchContentHelper(fmt GIT "https://github.com/fmtlib/fmt.git" "master"
     ADD_SUBDIR
-    PATCH_SUBDIR
-        ${FCH_PATCH_DIR}/patch.sh "fmt_*.patch"
     )
 set_target_properties(fmt PROPERTIES INTERFACE_COMPILE_DEFINITIONS "FMT_USE_CONSTEXPR")
 FetchContentHelper(spdlog GIT "https://github.com/gabime/spdlog.git" v1.x
