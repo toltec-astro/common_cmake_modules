@@ -28,3 +28,27 @@ else()
                 "set(EIGEN3_FOUND TRUE)\nset(EIGEN3_INCLUDE_DIR \${eigen_SOURCE_DIR})"
         )
 endif()
+add_library(cuEigen INTERFACE)
+target_link_libraries(cuEigen INTERFACE
+    	Eigen3::Eigen
+	)
+target_compile_options(cuEigen INTERFACE
+	-march=native
+	)
+
+# set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
+option(LALI_USE_MKL "use mkl if installed" ON)
+find_package(MKL)
+if (NOT MKL_FOUND)
+set(LALI_USE_MKL OFF)
+endif()
+if (LALI_USE_MKL)
+message("use mkl: ${MKL_LIBRARIES}")
+target_compile_definitions(cuEigen INTERFACE
+	EIGEN_USE_MKL_ALL
+	)
+target_link_libraries(cuEigen INTERFACE
+	${MKL_LIBRARIES}
+	)
+endif()
+add_library(cmake_utils::Eigen ALIAS cuEigen)
