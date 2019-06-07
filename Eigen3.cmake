@@ -1,5 +1,12 @@
 include_guard(GLOBAL)
 option(USE_INSTALLED_EIGEN3 "Use installed Eigen3" OFF)
+option(USE_EIGEN3_WITH_MKL "use intel mkl library if installed" ON)
+find_package(MKL)
+# set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
+if (NOT MKL_FOUND)
+    message("No intel mkl library found")
+    set(USE_EIGEN3_WITH_MKL OFF)
+endif()
 if (USE_INSTALLED_EIGEN3)
     set(Eigen3_DIR ${USE_INSTALLED_EIGEN3}/share/eigen3/cmake)
     if (EXISTS ${Eigen3_DIR})
@@ -12,9 +19,6 @@ if (USE_INSTALLED_EIGEN3)
         NO_MODULE
         NO_CMAKE_PACKAGE_REGISTRY
         NO_CMAKE_BUILDS_PATH)
-    include(PrintProperties)
-    print_target_properties(Eigen3::Eigen)
-    # set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
     message("Found Eigen3 in ${EIGEN3_INCLUDE_DIR}")
 else()
     include(FetchContentHelper)
@@ -28,27 +32,24 @@ else()
                 "set(EIGEN3_FOUND TRUE)\nset(EIGEN3_INCLUDE_DIR \${eigen_SOURCE_DIR})"
         )
 endif()
-add_library(cuEigen INTERFACE)
-target_link_libraries(cuEigen INTERFACE
-    	Eigen3::Eigen
-	)
-target_compile_options(cuEigen INTERFACE
-	-march=native
-	)
-
-# set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
-option(LALI_USE_MKL "use mkl if installed" ON)
-find_package(MKL)
-if (NOT MKL_FOUND)
-set(LALI_USE_MKL OFF)
+set_property(
+    TARGET eigen
+    APPEND PROPERTY
+    INTERFACE_COMPILE_OPTIONS -march=native
+)
+if (USE_EIGEN3_WITH_MKL)
+    message("Enable mkl libraries for eigen")
+    set_property(
+        TARGET eigen
+        APPEND PROPERTY
+        INTERFACE_COMPILE_DEFINITIONS EIGEN_USE_MKL_ALL
+    )
+    set_property(
+        TARGET eigen
+        APPEND PROPERTY
+        INTERFACE_LINK_LIBRARIES ${MKL_LIBRARIES}
+    )
 endif()
-if (LALI_USE_MKL)
-message("use mkl: ${MKL_LIBRARIES}")
-target_compile_definitions(cuEigen INTERFACE
-	EIGEN_USE_MKL_ALL
-	)
-target_link_libraries(cuEigen INTERFACE
-	${MKL_LIBRARIES}
-	)
-endif()
-add_library(cmake_utils::Eigen ALIAS cuEigen)
+include(PrintProperties)
+print_target_properties(Eigen3::Eigen)
+add_library(cmake_utils::Eigen ALIAS eigen)
