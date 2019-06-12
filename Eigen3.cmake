@@ -1,12 +1,29 @@
 include_guard(GLOBAL)
 option(USE_INSTALLED_EIGEN3 "Use installed Eigen3" OFF)
 option(USE_EIGEN3_WITH_MKL "use intel mkl library if installed" ON)
+option(USE_EIGEN3_WITH_OMP "use openmp library if installed" ON)
+include(PrintProperties)
+# performance libs
+set(perfdefs "")
+set(perflibs "")
 find_package(MKL)
-# set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")
 if (NOT MKL_FOUND)
     message("No intel mkl library found")
     set(USE_EIGEN3_WITH_MKL OFF)
+else()
+    set(perfdefs ${perfdefs} EIGEN_USE_MKL_ALL)
+    set(perflibs ${perflibs} MKL::MKL)
+    print_target_properties(MKL::MKL)
 endif()
+find_package(OpenMP)
+if (NOT OpenMP_FOUND)
+    message("No openmp library found")
+    set(USE_EIGEN3_WITH_OMP OFF)
+else()
+    set(perflibs ${perflibs} OpenMP::OpenMP_CXX)
+    print_target_properties(OpenMP::OpenMP_CXX)
+endif()
+
 if (USE_INSTALLED_EIGEN3)
     set(Eigen3_DIR ${USE_INSTALLED_EIGEN3}/share/eigen3/cmake)
     if (EXISTS ${Eigen3_DIR})
@@ -38,7 +55,7 @@ set_property(
     INTERFACE_COMPILE_OPTIONS -march=native
 )
 if (USE_EIGEN3_WITH_MKL)
-    message("Enable mkl libraries for eigen")
+    message("Enable mkl libraries for Eigen3::Eigen")
     set_property(
         TARGET eigen
         APPEND PROPERTY
@@ -47,9 +64,29 @@ if (USE_EIGEN3_WITH_MKL)
     set_property(
         TARGET eigen
         APPEND PROPERTY
-        INTERFACE_LINK_LIBRARIES ${MKL_LIBRARIES}
+        INTERFACE_LINK_LIBRARIES MKL::MKL
     )
 endif()
-include(PrintProperties)
+if (USE_EIGEN3_WITH_OMP)
+    message("Enable omp libraries for Eigen3::Eigen")
+    set_property(
+        TARGET eigen
+        APPEND PROPERTY
+        INTERFACE_LINK_LIBRARIES OpenMP::OpenMP_CXX
+    )
+endif()
 print_target_properties(Eigen3::Eigen)
-add_library(cmake_utils::Eigen ALIAS eigen)
+message("Create Eigen target cmake_utils::Eigen with performance libs")
+add_library(eigen_with_perflibs INTERFACE)
+target_compile_definitions(eigen_with_perflibs
+    INTERFACE
+        ${perfdefs}
+    )
+target_link_libraries(eigen_with_perflibs
+    INTERFACE
+        ${perflibs}
+    )
+add_library(cmake_utils::EigenWithPerfLibs ALIAS eigen_with_perflibs)
+print_target_properties(cmake_utils::EigenWithPerfLibs)
+
+# set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_COMPILE_DEFINITIONS "EIGEN_NO_MALLOC")

@@ -1,6 +1,6 @@
 include_guard(GLOBAL)
 include(FetchContentHelper)
-FetchContentHelper(benchmark GIT https://github.com/google/benchmark.git v1.4.1
+FetchContentHelper(benchmark GIT https://github.com/google/benchmark.git v1.5.0
     ADD_SUBDIR CONFIG_SUBDIR
         BENCHMARK_ENABLE_GTEST_TESTS=OFF
         BENCHMARK_ENABLE_TESTS=OFF
