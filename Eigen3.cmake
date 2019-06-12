@@ -1,7 +1,7 @@
 include_guard(GLOBAL)
 option(USE_INSTALLED_EIGEN3 "Use installed Eigen3" OFF)
-option(USE_EIGEN3_WITH_MKL "use intel mkl library if installed" ON)
-option(USE_EIGEN3_WITH_OMP "use openmp library if installed" ON)
+option(USE_EIGEN3_WITH_MKL "Use intel mkl library if installed" ON)
+option(USE_EIGEN3_WITH_OMP "Use openmp library if installed" ON)
 include(PrintProperties)
 # performance libs
 set(perfdefs "")
@@ -14,6 +14,7 @@ else()
     set(perfdefs ${perfdefs} EIGEN_USE_MKL_ALL)
     set(perflibs ${perflibs} MKL::MKL)
     print_target_properties(MKL::MKL)
+    print_target_properties(MKL::MKL_ThreadingLibrary)
 endif()
 find_package(OpenMP)
 if (NOT OpenMP_FOUND)
@@ -52,7 +53,9 @@ endif()
 set_property(
     TARGET eigen
     APPEND PROPERTY
-    INTERFACE_COMPILE_OPTIONS -march=native
+    INTERFACE_COMPILE_OPTIONS
+    $<$<COMPILE_LANGUAGE:CXX>:-march=native>
+    $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-march=native --expt-relaxed-constexpr --expt-extended-lambda -Xcudafe --display_error_number>
 )
 if (USE_EIGEN3_WITH_MKL)
     message("Enable mkl libraries for Eigen3::Eigen")
@@ -84,6 +87,7 @@ target_compile_definitions(eigen_with_perflibs
     )
 target_link_libraries(eigen_with_perflibs
     INTERFACE
+    	Eigen3::Eigen
         ${perflibs}
     )
 add_library(cmake_utils::EigenWithPerfLibs ALIAS eigen_with_perflibs)

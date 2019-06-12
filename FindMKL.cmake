@@ -157,7 +157,7 @@ function(find_mkl_library)
       intel64/gcc4.7)
   mark_as_advanced(MKL_${mkl_args_NAME}_LINK_LIBRARY)
 
-  #message(STATUS "NAME: ${mkl_args_NAME} LIBNAME: ${mkl_args_LIBRARY_NAME} MKL_${mkl_args_NAME}_LINK_LIBRARY  ${MKL_${mkl_args_NAME}_LINK_LIBRARY}")
+  message(STATUS "NAME: ${mkl_args_NAME} LIBNAME: ${mkl_args_LIBRARY_NAME} MKL_${mkl_args_NAME}_LINK_LIBRARY  ${MKL_${mkl_args_NAME}_LINK_LIBRARY}")
 
   # The rt library does not have a static library
   if(NOT ${mkl_args_NAME} STREQUAL "rt")
