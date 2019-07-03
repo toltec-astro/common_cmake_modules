@@ -14,7 +14,6 @@ else()
     set(perfdefs ${perfdefs} EIGEN_USE_MKL_ALL)
     set(perflibs ${perflibs} MKL::MKL)
     print_target_properties(MKL::MKL)
-    print_target_properties(MKL::MKL_ThreadingLibrary)
 endif()
 find_package(OpenMP)
 if (NOT OpenMP_FOUND)
@@ -50,8 +49,13 @@ else()
                 "set(EIGEN3_FOUND TRUE)\nset(EIGEN3_INCLUDE_DIR \${eigen_SOURCE_DIR})"
         )
 endif()
+if (TARGET eigen)
+    set(eigen_target "eigen")
+else()
+    set(eigen_target "Eigen3::Eigen")
+endif()
 set_property(
-    TARGET eigen
+    TARGET ${eigen_target}
     APPEND PROPERTY
     INTERFACE_COMPILE_OPTIONS
     $<$<COMPILE_LANGUAGE:CXX>:-march=native>
@@ -60,12 +64,12 @@ set_property(
 if (USE_EIGEN3_WITH_MKL)
     message("Enable mkl libraries for Eigen3::Eigen")
     set_property(
-        TARGET eigen
+        TARGET ${eigen_target}
         APPEND PROPERTY
         INTERFACE_COMPILE_DEFINITIONS EIGEN_USE_MKL_ALL
     )
     set_property(
-        TARGET eigen
+        TARGET ${eigen_target}
         APPEND PROPERTY
         INTERFACE_LINK_LIBRARIES MKL::MKL
     )
@@ -73,7 +77,7 @@ endif()
 if (USE_EIGEN3_WITH_OMP)
     message("Enable omp libraries for Eigen3::Eigen")
     set_property(
-        TARGET eigen
+        TARGET ${eigen_target}
         APPEND PROPERTY
         INTERFACE_LINK_LIBRARIES OpenMP::OpenMP_CXX
     )

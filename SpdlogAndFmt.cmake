@@ -24,5 +24,5 @@ elseif (loglevel STREQUAL "error")
 endif()
 set_target_properties(spdlog PROPERTIES
     INTERFACE_COMPILE_DEFINITIONS
-        "SPDLOG_FMT_EXTERNAL;${SPDLOG_ACTIVE_LEVEL}"
+        "${SPDLOG_ACTIVE_LEVEL}"
     )
