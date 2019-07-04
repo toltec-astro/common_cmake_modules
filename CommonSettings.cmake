@@ -41,6 +41,11 @@ else()
     set(CMAKE_LINK_WHAT_YOU_USE TRUE)
     if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
         add_definitions(-Wno-deprecated-declarations)
+	# custom gcc
+        get_filename_component(compiler_bindir ${CMAKE_CXX_COMPILER} DIRECTORY)
+        get_filename_component(compiler_libdir ${compiler_bindir}/../lib64 ABSOLUTE)
+        message("Link CXX libs from ${compiler_libdir}")
+        set(CMAKE_EXE_LINKER_FLAGS "-L${compiler_libdir} -Wl,-rpath,${compiler_libdir}")
     endif()
 endif()
 # Paths and directories
