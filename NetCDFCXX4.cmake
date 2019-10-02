@@ -21,7 +21,7 @@ else()
             BUILD_SHARED_LIBS=OFF
             NCXX_ENABLE_TESTS=OFF
         PATCH_SUBDIR
-            ${FCH_PATCH_DIR}/patch.sh "netcdf_cxx4*.patch"
+            ${FCH_PATCH_DIR}/patch.sh "netcdf_cxx4_fixcmake.patch"
         )
 endif()
 add_library(NetCDF::NetCDFCXX4 ALIAS netcdf-cxx4)
