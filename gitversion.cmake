@@ -1,11 +1,19 @@
+include_guard(GLOBAL)
 set(gitversion_dir ${CMAKE_CURRENT_LIST_DIR})
+add_library(utils_gitversion INTERFACE)
+add_library(utils::gitversion ALIAS utils_gitversion)
 
-function(GenVersionHeader output_dir)
+function(GenVersionHeader output_dir name)
+    if (NOT name)
+        set(output_path ${output_dir}/gitversion.h)
+    else()
+        set(output_path ${output_dir}/${name}/gitversion.h)
+    endif()
     message(STATUS "Resolving GIT Version")
     set(_build_version "unknown")
     find_package(Git)
     if(GIT_FOUND)
-        set(local_dir ${CMAKE_CURRENT_SOURCE_DIR})
+        set(local_dir ${CMAKE_CURRENT_LIST_DIR})
         message( STATUS "GIT exec: ${GIT_EXECUTABLE}")
         message( STATUS "GIT dir: ${local_dir}")
         execute_process(
@@ -30,10 +38,8 @@ function(GenVersionHeader output_dir)
 
     string(TIMESTAMP _time_stamp)
 
-    configure_file(${gitversion_dir}/gitversion.h.in ${output_dir}/gitversion.h @ONLY)
-    add_library(utils_gitversion INTERFACE)
+    configure_file(${gitversion_dir}/gitversion.h.in ${output_path} @ONLY)
     add_dependencies(utils_gitversion ${output_dir}/gitversion.h)
     target_include_directories(
         utils_gitversion INTERFACE ${output_dir})
-    add_library(utils::gitversion ALIAS utils_gitversion)
 endfunction()
