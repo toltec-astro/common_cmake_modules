@@ -256,6 +256,9 @@ if(NOT WIN32)
 endif()
 if(MKL_FOUND)
   add_library(MKL::MKL SHARED IMPORTED)
+  message("mkl core lib: ${MKL_Core_LINK_LIBRARY}")
+  get_filename_component(MKL_RPATH ${MKL_Core_LINK_LIBRARY} DIRECTORY)
+  target_link_options(MKL::MKL INTERFACE -Wl,-rpath,${MKL_RPATH})
   if(MKL_THREAD_LAYER STREQUAL "Sequential")
     set_target_properties(MKL::MKL
       PROPERTIES
