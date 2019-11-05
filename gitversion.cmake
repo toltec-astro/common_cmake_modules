@@ -1,7 +1,7 @@
 include_guard(GLOBAL)
 set(gitversion_dir ${CMAKE_CURRENT_LIST_DIR})
-add_library(utils_gitversion INTERFACE)
-add_library(utils::gitversion ALIAS utils_gitversion)
+add_library(cmake_utils_gitversion INTERFACE)
+add_library(cmake_utils::gitversion ALIAS cmake_utils_gitversion)
 
 function(GenVersionHeader output_dir name)
     if (NOT name)
@@ -39,7 +39,7 @@ function(GenVersionHeader output_dir name)
     string(TIMESTAMP _time_stamp)
 
     configure_file(${gitversion_dir}/gitversion.h.in ${output_path} @ONLY)
-    add_dependencies(utils_gitversion ${output_dir}/gitversion.h)
+    add_dependencies(cmake_utils_gitversion ${output_dir}/gitversion.h)
     target_include_directories(
-        utils_gitversion INTERFACE ${output_dir})
+        cmake_utils_gitversion INTERFACE ${output_dir})
 endfunction()
