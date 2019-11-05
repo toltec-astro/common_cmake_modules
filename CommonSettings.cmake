@@ -1,5 +1,6 @@
+cmake_minimum_required(VERSION 3.15)
 include_guard(GLOBAL)
-set(COMMON_SETTINGS_MINIMUM_VERSION "3.12")
+set(COMMON_SETTINGS_MINIMUM_VERSION "3.15")
 if(${CMAKE_VERSION} VERSION_LESS ${COMMON_SETTINGS_MINIMUM_VERSION})
     message(FATAL_ERROR "The common settings require minimum cmake version ${COMMON_SETTINGS_MINIMUM_VERSION}")
 endif()
