@@ -39,7 +39,7 @@ if (USE_INSTALLED_EIGEN3)
     message("Found Eigen3 in ${EIGEN3_INCLUDE_DIR}")
 else()
     include(FetchContentHelper)
-    FetchContentHelper(eigen HG "https://bitbucket.org/eigen/eigen" "default"
+    FetchContentHelper(eigen GIT "https://gitlab.com/libeigen/eigen.git" "master"
         ADD_SUBDIR CONFIG_SUBDIR
             BUILD_TESTING=OFF
         PATCH_SUBDIR
