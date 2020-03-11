@@ -157,7 +157,8 @@ function(find_mkl_library)
       ""
       intel64
       intel64_lin
-      intel64/gcc4.7)
+      intel64/gcc4.7
+      intel64/gcc4.8)
   mark_as_advanced(MKL_${mkl_args_NAME}_LINK_LIBRARY)
 
   message(STATUS "NAME: ${mkl_args_NAME} LIBNAME: ${mkl_args_LIBRARY_NAME} MKL_${mkl_args_NAME}_LINK_LIBRARY  ${MKL_${mkl_args_NAME}_LINK_LIBRARY}")
@@ -180,6 +181,7 @@ function(find_mkl_library)
         intel64
 	intel64_lin
         intel64/gcc4.7
+        intel64/gcc4.8
         IntelSWTools/compilers_and_libraries/windows/mkl/lib/intel64
         IntelSWTools/compilers_and_libraries/windows/compiler/lib/intel64
         IntelSWTools/compilers_and_libraries/windows/tbb/lib/intel64/${msvc_dir}
