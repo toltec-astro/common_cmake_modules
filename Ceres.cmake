@@ -16,6 +16,7 @@ else()
             EIGEN_PREFER_EXPORTED_EIGEN_CMAKE_CONFIGURATION=ON
             EIGENSPARSE=ON
             SUITESPARSE=ON
+            ACCELERATESPARSE=OFF
             CXSPARSE=OFF
             GFLAGS=OFF
             MINIGLOG=ON
