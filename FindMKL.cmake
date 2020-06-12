@@ -83,6 +83,7 @@ find_path(MKL_INCLUDE_DIR
     mkl_blas.h
     mkl_cblas.h
   PATHS
+    /usr/include/mkl
     /opt/intel
     /opt/intel/mkl
     $ENV{MKLROOT}
