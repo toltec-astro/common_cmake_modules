@@ -1,25 +1,23 @@
 diff --git a/internal/ceres/lapack.cc b/internal/ceres/lapack.cc
-index 37efbcd..cf1c948 100644
+index a159ec7..1652eae 100644
 --- a/internal/ceres/lapack.cc
 +++ b/internal/ceres/lapack.cc
-@@ -36,31 +36,31 @@
+@@ -36,27 +36,31 @@
  
  #ifndef CERES_NO_LAPACK
  // C interface to the LAPACK Cholesky factorization and triangular solve.
--extern "C" void dpotrf_(char* uplo,
--                       int* n,
-+extern "C" void dpotrf_(const char* uplo,
-+                       const int* n,
-                        double* a,
--                       int* lda,
-+                       const int* lda,
-                        int* info);
- 
+-extern "C" void dpotrf_(char* uplo, int* n, double* a, int* lda, int* info);
+-
 -extern "C" void dpotrs_(char* uplo,
 -                        int* n,
 -                        int* nrhs,
--                        double* a,
++extern "C" void dpotrf_(const char* uplo,
++                        const int* n,
+                         double* a,
 -                        int* lda,
++                        const int* lda,
++                        int* info);
++
 +extern "C" void dpotrs_(const char* uplo,
 +                        const int* n,
 +                        const int* nrhs,
