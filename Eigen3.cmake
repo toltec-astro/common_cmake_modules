@@ -1,8 +1,16 @@
 include_guard(GLOBAL)
+include(PrintProperties)
+
+# This module setup two targets:
+# (1) the standard Eigen3::Eigen target. This target horners the
+# USE_EIGEN3_* settings defined below.
+# (2) a cmake_utils::EigenWithPerfLibs target. This target always
+# include the all the perf libs found.
 option(USE_INSTALLED_EIGEN3 "Use installed Eigen3" OFF)
 option(USE_EIGEN3_WITH_MKL "Use intel mkl library if installed" ON)
 option(USE_EIGEN3_WITH_OMP "Use openmp library if installed" ON)
-include(PrintProperties)
+option(USE_EIGEN3_MULTITHREADING "Enable multithreading inside Eigen3" ON)
+
 # performance libs
 set(perfdefs "")
 set(perflibs "")
@@ -81,6 +89,17 @@ if (USE_EIGEN3_WITH_OMP)
         APPEND PROPERTY
         INTERFACE_LINK_LIBRARIES OpenMP::OpenMP_CXX
     )
+endif()
+if (USE_EIGEN3_MULTITHREADING)
+    message("Enable multithreading for Eigen3::Eigen")
+else()
+    message("Disable multithreading for Eigen3::Eigen")
+    set_property(
+        TARGET ${eigen_target}
+        APPEND PROPERTY
+        INTERFACE_COMPILE_DEFINITIONS EIGEN_DONT_PARALLELIZE
+    )
+    set(perfdefs ${perfdefs} EIGEN_DONT_PARALLELIZE)
 endif()
 print_target_properties(Eigen3::Eigen)
 message("Create Eigen target cmake_utils::Eigen with performance libs")
