@@ -32,6 +32,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND ${cfitsio_configure}
     BUILD_COMMAND ${cfitsio_make}
     INSTALL_COMMAND ${cfitsio_install}
+    BUILD_BYPRODUCTS ${cfitsio_prefix}/lib/libcfitsio.a
     )
 
 add_library(ep_cfitsio STATIC IMPORTED)
@@ -82,6 +83,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND ${CCfits_configure}
     BUILD_COMMAND ${CCfits_make}
     INSTALL_COMMAND ${CCfits_install}
+    BUILD_BYPRODUCTS ${CCfits_prefix}/lib/libCCfits.a
     )
 
 # make sure ccfits compiles after cfitsio
