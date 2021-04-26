@@ -36,6 +36,8 @@ ExternalProject_Add(
 
 add_library(ep_cfitsio STATIC IMPORTED)
 set_property(TARGET ep_cfitsio PROPERTY IMPORTED_LOCATION ${cfitsio_prefix}/lib/libcfitsio.a)
+# this is need to make sure the include dir exists in config time.
+file(MAKE_DIRECTORY ${cfitsio_prefix}/include)
 set_property(TARGET ep_cfitsio PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${cfitsio_prefix}/include ${cfitsio_SOURCE_DIR})
 add_dependencies(ep_cfitsio cfitsio)
 add_library(cmake_utils::cfitsio ALIAS ep_cfitsio)
@@ -87,6 +89,8 @@ add_dependencies(CCfits cfitsio)
 
 add_library(ep_CCfits STATIC IMPORTED)
 set_property(TARGET ep_CCfits PROPERTY IMPORTED_LOCATION ${CCfits_prefix}/lib/libCCfits.a)
+# this is need to make sure the include dir exists in config time.
+file(MAKE_DIRECTORY ${CCfits_prefix}/include)
 set_property(TARGET ep_CCfits PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CCfits_prefix}/include ${CCfits_tmp_include_dir})
 target_link_libraries(ep_CCfits
     INTERFACE
