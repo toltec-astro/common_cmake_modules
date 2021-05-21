@@ -30,7 +30,7 @@ function(ExternalProjectHelper name)
     message(STATUS "build byproducts: ${build_byproducts}")
     # file(MAKE_DIRECTORY ${name}_SOURCE_DIR)
     # file(WRITE "${name}_SOURCE_DIR/eph_source_tag" "${name}")
-    find_program(MAKE_EXE NAMES gmake nmake make)
+    find_program(MAKE_EXE NAMES make gmake nmake)
     ExternalProject_Add(
         ${name}
         SOURCE_DIR ${${name}_SOURCE_DIR}
