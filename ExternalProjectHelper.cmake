@@ -39,7 +39,7 @@ function(ExternalProjectHelper name)
         ${EPH_PROJECT_ADD}
         CONFIGURE_COMMAND ./configure --prefix=${EPH_PREFIX} ${EPH_CONFIGURE_ARGS}
         BUILD_COMMAND ${MAKE_EXE} ${EPH_MAKE_ARGS}
-        INSTALL_COMMAND ${MAKE_EXE} install ${EPH_MAKE_INSTALL_ARGS}
+        INSTALL_COMMAND ${MAKE_EXE} ${EPH_MAKE_INSTALL_ARGS}
         BUILD_BYPRODUCTS ${build_byproducts}
         )
     set(inc_src_dirs ${EPH_INCLUDE_SOURCE_DIRS})

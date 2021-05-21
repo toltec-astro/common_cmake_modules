@@ -12,7 +12,7 @@ ExternalProjectHelper(
     MAKE_ARGS
         libcfitsio.a
     MAKE_INSTALL_ARGS
-        ""
+        "install"
     LIBS
         libcfitsio.a
     INCLUDE_SOURCE_DIRS
@@ -32,7 +32,7 @@ ExternalProjectHelper(
     MAKE_ARGS
         libCCfits.la
     MAKE_INSTALL_ARGS
-        ""
+        "install-data-am install-libLTLIBRARIES"
     LIBS
         libCCfits.a
     INCLUDE_SOURCE_DIRS
