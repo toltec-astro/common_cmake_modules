@@ -32,7 +32,7 @@ ExternalProjectHelper(
     MAKE_ARGS
         libCCfits.la
     MAKE_INSTALL_ARGS
-        "install-data-am install-libLTLIBRARIES"
+        install-data-am install-libLTLIBRARIES
     LIBS
         libCCfits.a
     INCLUDE_SOURCE_DIRS
