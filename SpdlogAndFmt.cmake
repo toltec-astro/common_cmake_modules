@@ -4,7 +4,7 @@ FetchContentHelper(fmt GIT "https://github.com/fmtlib/fmt.git" "7.1.3"
     ADD_SUBDIR
     )
 # set_target_properties(fmt PROPERTIES INTERFACE_COMPILE_DEFINITIONS "FMT_USE_CONSTEXPR")
-FetchContentHelper(spdlog GIT "https://github.com/gabime/spdlog.git" v1.x
+FetchContentHelper(spdlog GIT "https://github.com/gabime/spdlog.git" v1.8.5
     ADD_SUBDIR CONFIG_SUBDIR
     SPDLOG_FMT_EXTERNAL=ON
     )
