@@ -24,7 +24,7 @@ add_library(cmake_utils::cfitsio ALIAS eph_cfitsio)
 ExternalProjectHelper(
     ccfits
     CONTENT_DECLARE
-        URL "https://heasarc.gsfc.nasa.gov/fitsio/CCfits/CCfits-2.5.tar.gz"
+        URL "https://heasarc.gsfc.nasa.gov/fitsio/CCfits/CCfits-2.6.tar.gz"
     PROJECT_ADD
         BUILD_IN_SOURCE 1
     CONFIGURE_ARGS
