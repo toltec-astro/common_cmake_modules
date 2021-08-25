@@ -8,7 +8,7 @@ set(EPH_INCDIR ${EPH_PREFIX}/include)
 file(MAKE_DIRECTORY ${EPH_INCDIR})
 
 function(ExternalProjectHelper name)
-    set(mvargs CONTENT_DECLARE PROJECT_ADD CONFIGURE_ARGS MAKE_ARGS MAKE_INSTALL_ARGS LIBS INCLUDE_SOURCE_DIRS DEPS)
+    set(mvargs CONTENT_DECLARE PROJECT_ADD ADD_ENV CONFIGURE_ARGS MAKE_ARGS MAKE_INSTALL_ARGS LIBS INCLUDE_SOURCE_DIRS DEPS)
     cmake_parse_arguments(PARSE_ARGV 1 EPH "" "" "${mvargs}")
 
     set(declare_args
@@ -31,16 +31,20 @@ function(ExternalProjectHelper name)
     # file(MAKE_DIRECTORY ${name}_SOURCE_DIR)
     # file(WRITE "${name}_SOURCE_DIR/eph_source_tag" "${name}")
     find_program(MAKE_EXE NAMES make gmake nmake)
+    set(call_with_env ${CMAKE_COMMAND} -E env CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} ${EPH_ADD_ENV} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS})
     ExternalProject_Add(
         ${name}
         SOURCE_DIR ${${name}_SOURCE_DIR}
         PREFIX ${EPH_PREFIX}
         LOG_BUILD ON
         ${EPH_PROJECT_ADD}
-        CONFIGURE_COMMAND ./configure --prefix=${EPH_PREFIX} ${EPH_CONFIGURE_ARGS}
-        BUILD_COMMAND ${MAKE_EXE} ${EPH_MAKE_ARGS}
+        CONFIGURE_COMMAND ${call_with_env} ./configure --prefix=${EPH_PREFIX} ${EPH_CONFIGURE_ARGS}
+        BUILD_COMMAND ${call_with_env} ${MAKE_EXE} ${EPH_MAKE_ARGS}
         INSTALL_COMMAND ${MAKE_EXE} ${EPH_MAKE_INSTALL_ARGS}
         BUILD_BYPRODUCTS ${build_byproducts}
+        CMAKE_ARGS
+            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
         )
     set(inc_src_dirs ${EPH_INCLUDE_SOURCE_DIRS})
     list(TRANSFORM inc_src_dirs PREPEND ${${name}_SOURCE_DIR}/)
@@ -52,7 +56,8 @@ function(ExternalProjectHelper name)
         set(static_libs ${static_libs} ${target_name})
         add_library(${target_name} STATIC IMPORTED GLOBAL)
         set_property(TARGET ${target_name} PROPERTY IMPORTED_LOCATION ${EPH_LIBDIR}/${lib})
-        set_property(TARGET ${target_name} PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${EPH_INCDIR} ${inc_src_dirs})
+        target_include_directories(${target_name} BEFORE INTERFACE ${EPH_INCDIR} ${inc_src_dirs})
+        # set_property(TARGET ${target_name} PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${EPH_INCDIR} ${inc_src_dirs})
     endforeach()
     # set(EPH_${NAME}_LIBS ${static_libs} PARENT_SCOPE)
     message(STATUS "static libs: ${static_libs}")

@@ -27,8 +27,10 @@ ExternalProjectHelper(
         URL "https://heasarc.gsfc.nasa.gov/fitsio/CCfits/CCfits-2.6.tar.gz"
     PROJECT_ADD
         BUILD_IN_SOURCE 1
+    ADD_ENV
+        LIBS=-lz
     CONFIGURE_ARGS
-    --with-cfitsio-include=${cfitsio_SOURCE_DIR} --with-cfitsio-libdir=${EPH_PREFIX} --enable-static --disable-shared
+    --with-cfitsio-include=${EPH_PREFIX}/include --with-cfitsio-libdir=${EPH_PREFIX}/lib --enable-static --disable-shared
     MAKE_ARGS
         libCCfits.la
     MAKE_INSTALL_ARGS
@@ -51,5 +53,7 @@ set(CCfits_tmp_headers_dir ${CCfits_tmp_include_dir}/CCfits)
 file(MAKE_DIRECTORY ${CCfits_tmp_headers_dir})
 file(COPY ${CCfits_headers} DESTINATION ${CCfits_tmp_headers_dir})
 add_library(cmake_utils::ccfits ALIAS eph_ccfits)
-# print_target_properties(eph_cfitsio)
-# print_target_properties(eph_ccfits)
+print_target_properties(eph_cfitsio_libcfitsio)
+print_target_properties(eph_cfitsio)
+print_target_properties(eph_ccfits_libCCfits)
+print_target_properties(eph_ccfits)
