@@ -1,0 +1,24 @@
+diff --git a/internal/ceres/dense_qr.cc b/internal/ceres/dense_qr.cc
+index b2d9bb81..a0185ae6 100644
+--- a/internal/ceres/dense_qr.cc
++++ b/internal/ceres/dense_qr.cc
+@@ -84,8 +84,8 @@ extern "C" void dgeqrf_(const int* m, const int* n, double* a, const int* lda,
+ // info = 0, successful exit.
+ // info < 0, if info = -i, then the i^th argument had illegal value.
+ extern "C" void dormqr_(const char* side, const char* trans, const int* m,
+-                        const int* n ,const int* k, double* a, const int* lda,
+-                        double* tau, double* b, const int* ldb, double* work,
++                        const int* n ,const int* k, const double* a, const int* lda,
++                        const double* tau, double* b, const int* ldb, double* work,
+                         const int* lwork, int* info);
+ 
+ // Solve a triangular system of the form A * x = b
+@@ -102,7 +102,7 @@ extern "C" void dormqr_(const char* side, const char* trans, const int* m,
+ //      = -i < 0 i^th argument is an illegal value.
+ //      = i > 0, i^th diagonal element of A is zero.
+ extern "C" void dtrtrs_(const char* uplo, const char* trans, const char* diag,
+-                        const int* n, const int* nrhs, double* a, const int* lda,
++                        const int* n, const int* nrhs, const double* a, const int* lda,
+                         double* b, const int* ldb, int* info);
+ // clang-format on
+ 
